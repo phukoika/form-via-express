@@ -1,0 +1,32 @@
+.swiper-wrapper {
+  margin-left: 40px;
+  margin-right: 40px;
+  align-items: center;
+  line-height: 46px;
+  height: 46px !important;
+  gap: 0 8px !important;
+}
+.mySwiper {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.swiper-slide {
+  display: flex !important;
+  user-select: none;
+  justify-content: flex-start !important;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #fdba4d;
+}
+
+.otp-input input {
+  border: 1px solid #ccc;
+}
+
+.otp-input .otp-resend-root {
+  margin-left: 30px;
+}
