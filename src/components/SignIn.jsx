@@ -9,8 +9,10 @@ import { Modal } from "antd";
 import ModalForgotPassword from "./modal/ModalForgotPassword";
 import ModalSendOtp from "./modal/ModalSendOtp";
 import ModalSetNewPassword from "./modal/ModalSetNewPassword";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const SignIn = () => {
+  const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
   const [status, setStatus] = useState("");
   const handleClick = () => {
@@ -23,7 +25,7 @@ const SignIn = () => {
     control,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
-    mode: "onChange",
+    mode: "onSubmit",
     resolver: yupResolver(UserSchemaLogin),
   });
   useEffect(() => {
@@ -40,7 +42,31 @@ const SignIn = () => {
     setStatus(status);
   };
   const onSubmit = async (values) => {
-    console.log(values);
+    try {
+      const response = await axios.post(
+        "https://dev-fe-exam.viajsc.com/ExamUser/login",
+        values
+      );
+      if (response.status === 200) {
+        console.log("Login successful!");
+        console.log("Response data:", response.data.content);
+        toast.success("Login successful!", {
+          pauseOnHover: false,
+          delay: 0,
+          autoClose: 1000,
+        });
+        sessionStorage.setItem(
+          "userData",
+          JSON.stringify(response.data.content)
+        );
+
+        navigate("/home");
+      } else {
+        console.log("Login unsuccessful. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error occurred during login:", error);
+    }
   };
 
   return (

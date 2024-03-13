@@ -12,8 +12,8 @@ import {
 import MyCheckBox from "./input/MyCheckBox";
 import { toast } from "react-toastify";
 import { MyDropdown } from "./dropdown";
-import { About } from "./about";
 import axios from "axios";
+import About from "./about/About";
 const SignUp = () => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);

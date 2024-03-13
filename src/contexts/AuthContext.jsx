@@ -1,31 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+function AuthProvider(props) {
+  const userDataString = sessionStorage.getItem("userData");
 
-export function AuthProvider(props) {
-  const [authUser, setAuthUser] = useState(null);
-  const [isLoggedIn, setIsloggedIn] = useState(false);
-  useEffect(() => {
-    const userInfoString = sessionStorage.getItem("userInfo");
-    if (userInfoString) {
-      setAuthUser(JSON.parse(userInfoString));
-      setIsloggedIn(true);
-    } else {
-      setAuthUser(null);
-      setIsloggedIn(false);
-    }
-  }, []);
-  const value = {
-    authUser,
-    setAuthUser,
-    isLoggedIn,
-    setIsloggedIn,
-  };
-  return (
-    <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
+  const [user, setUser] = useState(
+    userDataString ? JSON.parse(userDataString) : "null"
   );
+  const value = { user, setUser };
+  return <AuthContext.Provider value={value} {...props}></AuthContext.Provider>;
 }
+
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (typeof context === "undefined")
+    throw new Error("useAuth must be used within a AuthProvider");
+  return context;
+}
+
+export { AuthProvider, useAuth };
